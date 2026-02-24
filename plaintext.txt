@@ -1,0 +1,20 @@
+insurance-platform/          # 项目根目录
+├── index.html               # 首页
+├── companies.html           # 公司介绍列表页
+├── company-detail.html      # 保险公司详情页
+├── news.html                # 新闻中心列表页
+├── news-detail.html         # 新闻详情页
+├── contact.html             # 联系方式汇总页
+├── data.js                  # 所有静态数据（公司/新闻/轮播图）
+├── README.md                # 使用说明文档
+├── images/                  # 图片文件夹（需自行准备）
+│   ├── banner1.jpg          # 首页轮播图1
+│   ├── banner2.jpg          # 首页轮播图2
+│   ├── banner3.jpg          # 首页轮播图3
+│   ├── yanzhao.png          # 燕赵财险logo
+│   ├── pingan.png           # 平安保险logo
+│   ├── chinalife.png        # 中国人寿logo
+│   ├── pacific.png          # 太平洋保险logo
+└── files/                   # 附件文件夹（需自行准备）
+    └── 农险补贴政策.pdf     # 示例附件
+

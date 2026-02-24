@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>保险宣传平台 - 新闻中心</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "微软雅黑", sans-serif; }
+    /* 导航栏样式 */
+    .nav { height: 60px; background: #0066cc; display: flex; align-items: center; padding: 0 50px; flex-wrap: wrap; }
+    .nav .logo { color: white; font-size: 20px; font-weight: bold; margin-right: 50px; }
+    .nav a { color: white; text-decoration: none; margin: 0 20px; font-size: 16px; }
+    /* 主体容器 */
+    .container { padding: 30px 50px; max-width: 1200px; margin: 0 auto; }
+    .breadcrumb { font-size: 14px; color: #999; margin-bottom: 20px; }
+    .breadcrumb a { color: #0066cc; text-decoration: none; }
+    /* 筛选栏样式 */
+    .filter-bar { background: #f5f5f5; padding: 15px; border-radius: 5px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+    .filter-bar .filter-item { display: flex; flex-direction: column; gap: 5px; }
+    .filter-bar label { font-size: 14px; color: #666; }
+    .filter-bar select, .filter-bar input { padding: 8px 10px; border: 1px solid #ccc; border-radius: 3px; min-width: 150px; }
+    .filter-bar button { padding: 8px 20px; border: none; background: #0066cc; color: white; border-radius: 3px; cursor: pointer; align-self: flex-end; }
+    /* 新闻列表样式 */
+    .news-list { display: flex; flex-direction: column; gap: 20px; }
+    .news-card { background: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; gap: 20px; flex-wrap: wrap; }
+    .news-card .cover { width: 200px; height: 120px; border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+    .news-card .cover img { width: 100%; height: 100%; object-fit: cover; }
+    .news-card .content { flex: 1; }
+    .news-card .content h3 { margin-bottom: 10px; }
+    .news-card .content h3 a { color: #333; text-decoration: none; }
+    .news-card .content .info { color: #999; font-size: 12px; margin-bottom: 10px; display: flex; gap: 15px; flex-wrap: wrap; }
+    .news-card .content .desc { color: #666; line-height: 1.6; }
+    /* 空数据样式 */
+    .empty { text-align: center; padding: 50px; color: #999; }
+    /* 底部样式 */
+    .footer { background: #333; color: white; padding: 30px 50px; margin-top: 30px; }
+    .footer .contact { margin-bottom: 20px; }
+    .footer .copyright { font-size: 12px; color: #999; }
+
+    /* 响应式适配 */
+    @media (max-width: 768px) {
+      .nav { padding: 0 20px; }
+      .nav .logo { margin-right: 20px; }
+      .nav a { margin: 0 10px; }
+      .container { padding: 20px; }
+      .filter-bar { flex-direction: column; align-items: stretch; }
+      .filter-bar .filter-item { width: 100%; }
+      .news-card { flex-direction: column; }
+      .news-card .cover { width: 100%; height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 导航栏 -->
+  <div class="nav">
+    <div class="logo">保媒+</div>
+    <a href="index.html">首页</a>
+    <a href="companies.html">公司介绍</a>
+    <a href="news.html">新闻中心</a>
+    <a href="contact.html">联系方式</a>
+  </div>
+
+  <!-- 新闻中心主体 -->
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="index.html">首页</a> > 新闻中心
+    </div>
+
+    <!-- 筛选栏 -->
+    <div class="filter-bar">
+      <div class="filter-item">
+        <label>所属公司</label>
+        <select id="companyFilter">
+          <option value="all">全部公司</option>
+          <!-- 公司选项由JS渲染 -->
+        </select>
+      </div>
+      <div class="filter-item">
+        <label>发布时间</label>
+        <select id="timeFilter">
+          <option value="all">全部时间</option>
+          <option value="month">近一个月</option>
+          <option value="quarter">近三个月</option>
+          <option value="year">近一年</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label>关键词搜索</label>
+        <input type="text" id="keywordSearch" placeholder="输入标题/内容关键词...">
+      </div>
+      <button onclick="filterNews()">筛选</button>
+    </div>
+
+    <!-- 新闻列表 -->
+    <div class="news-list" id="newsList">
+      <!-- 新闻列表由JS渲染 -->
+    </div>
+  </div>
+
+  <!-- 底部 -->
+  <div class="footer">
+    <div class="contact">
+      <p><strong>保险让生活更美好</strong></p>
+      <p>平台仅提供宣传内容展示，合作事宜请直接联系对应保险公司</p>
+    </div>
+    <!--<div class="copyright">© 2025 保险宣传平台 版权所有 | 隐私政策 | 免责声明</div>-->
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    // 渲染保险公司筛选下拉框
+    function renderCompanyFilter() {
+      const select = document.getElementById("companyFilter");
+      insuranceCompanies.forEach(company => {
+        const option = document.createElement("option");
+        option.value = company.id;
+        option.textContent = company.name;
+        select.appendChild(option);
+      });
+    }
+
+    // 渲染新闻列表
+    function renderNewsList(news = newsList) {
+      const container = document.getElementById("newsList");
+      container.innerHTML = "";
+
+      if (news.length === 0) {
+        container.innerHTML = '<div class="empty">未找到符合条件的宣传内容</div>';
+        return;
+      }
+
+      // 按发布时间倒序排序
+      const sortedNews = [...news].sort((a, b) => new Date(b.publishTime) - new Date(a.publishTime));
+      
+      sortedNews.forEach(item => {
+        // 匹配所属公司名称
+        const company = insuranceCompanies.find(c => c.id === item.companyId);
+        const companyName = company ? company.name : "未知公司";
+        
+        // 提取纯文本简介（去除HTML标签）
+        const pureText = item.content.replace(/<[^>]+>/g, "");
+        const desc = pureText.length > 150 ? pureText.substring(0, 150) + "..." : pureText;
+
+        const newsCard = document.createElement("div");
+        newsCard.className = "news-card";
+        newsCard.innerHTML = `
+          <div class="cover">
+            <img src="${item.cover}" alt="${item.title}">
+          </div>
+          <div class="content">
+            <h3><a href="news-detail.html?id=${item.id}">${item.title}</a></h3>
+            <div class="info">
+              <span>所属公司：${companyName}</span>
+              <span>发布时间：${item.publishTime}</span>
+            </div>
+            <div class="desc">${desc}</div>
+          </div>
+        `;
+        container.appendChild(newsCard);
+      });
+    }
+
+    // 筛选新闻
+    function filterNews() {
+      //const category = document.getElementById("categoryFilter").value;
+      const companyId = document.getElementById("companyFilter").value;
+      const timeRange = document.getElementById("timeFilter").value;
+      const keyword = document.getElementById("keywordSearch").value.trim().toLowerCase();
+
+      let filtered = [...newsList];
+
+      // 1. 按险种筛选
+      //if (category !== "all") {
+      //  filtered = filtered.filter(n => n.category === category);
+      //}
+
+      // 2. 按公司筛选
+      if (companyId !== "all") {
+        filtered = filtered.filter(n => n.companyId === parseInt(companyId));
+      }
+
+      // 3. 按时间筛选
+      if (timeRange !== "all") {
+        const now = new Date();
+        let targetTime = new Date();
+        switch (timeRange) {
+          case "month":
+            targetTime.setMonth(now.getMonth() - 1);
+            break;
+          case "quarter":
+            targetTime.setMonth(now.getMonth() - 3);
+            break;
+          case "year":
+            targetTime.setFullYear(now.getFullYear() - 1);
+            break;
+        }
+        filtered = filtered.filter(n => new Date(n.publishTime) >= targetTime);
+      }
+
+      // 4. 按关键词筛选
+      if (keyword) {
+        filtered = filtered.filter(n => 
+          n.title.toLowerCase().includes(keyword) || 
+          n.content.replace(/<[^>]+>/g, "").toLowerCase().includes(keyword)
+        );
+      }
+
+      // 重新渲染列表
+      renderNewsList(filtered);
+    }
+
+    // 初始化页面
+    renderCompanyFilter();
+    renderNewsList();
+  </script>
+</body>
+</html>

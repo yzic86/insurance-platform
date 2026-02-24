@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>保险宣传平台 - 首页</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "微软雅黑", sans-serif; }
+    /* 导航栏样式 */
+    .nav { height: 60px; background: #0066cc; display: flex; align-items: center; padding: 0 50px; flex-wrap: wrap; }
+    .nav .logo { color: white; font-size: 20px; font-weight: bold; margin-right: 50px; }
+    .nav a { color: white; text-decoration: none; margin: 0 20px; font-size: 16px; }
+    .nav .search { margin-left: auto; display: flex; }
+    .nav .search input { padding: 5px 10px; border: none; border-radius: 3px 0 0 3px; }
+    .nav .search button { padding: 5px 15px; border: none; background: #0099ff; color: white; border-radius: 0 3px 3px 0; cursor: pointer; }
+
+    /* 轮播图样式 */
+    .banner { width: 100%; height: 400px; overflow: hidden; position: relative; }
+    .banner .banner-item { width: 100%; height: 100%; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.5s; }
+    .banner .banner-item.active { opacity: 1; }
+    .banner .banner-item img { width: 100%; height: 100%; object-fit: cover; }
+    .banner .banner-title { position: absolute; bottom: 20px; left: 50px; color: white; font-size: 24px; background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 5px; }
+
+    /* 险种入口样式 */
+    .category { padding: 30px 50px; text-align: center; }
+    .category h2 { margin-bottom: 20px; color: #333; }
+    .category .item-list { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+    .category .item { width: 100px; text-align: center; }
+    .category .item img { width: 60px; height: 60px; margin-bottom: 10px; }
+
+    /* 热门公司样式 */
+    .companies { padding: 30px 50px; background: #f5f5f5; }
+    .companies h2 { margin-bottom: 20px; color: #333; }
+    .companies .company-list { display: flex; gap: 30px; flex-wrap: wrap; }
+    .companies .company-card { width: 300px; background: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .companies .company-card img { width: 80px; height: 80px; margin-bottom: 10px; }
+    .companies .company-card h3 { margin-bottom: 10px; color: #0066cc; }
+    .companies .company-card p { color: #666; font-size: 14px; margin-bottom: 10px; }
+    .companies .company-card .coop-contact { color: #e63946; font-weight: bold; }
+    .companies .company-card a { color: #0066cc; text-decoration: none; font-size: 14px; }
+
+    /* 最新新闻样式 */
+    .news { padding: 30px 50px; }
+    .news h2 { margin-bottom: 20px; color: #333; }
+    .news .news-list { display: flex; flex-direction: column; gap: 15px; }
+    .news .news-item { padding: 15px; border-bottom: 1px solid #eee; }
+    .news .news-item h3 { margin-bottom: 5px; }
+    .news .news-item h3 a { color: #333; text-decoration: none; }
+    .news .news-item .info { color: #999; font-size: 12px; display: flex; gap: 15px; flex-wrap: wrap; }
+    .news .news-item p { color: #666; font-size: 14px; margin-top: 5px; }
+
+    /* 底部样式 */
+    .footer { background: #333; color: white; padding: 30px 50px; margin-top: 30px; }
+    .footer .contact { margin-bottom: 20px; }
+    .footer .copyright { font-size: 12px; color: #999; }
+
+    /* 响应式适配 */
+    @media (max-width: 768px) {
+      .nav { padding: 0 20px; }
+      .nav .logo { margin-right: 20px; }
+      .nav a { margin: 0 10px; }
+      .banner { height: 200px; }
+      .banner .banner-title { font-size: 16px; left: 20px; bottom: 10px; }
+      .category, .companies, .news { padding: 20px; }
+      .companies .company-list { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 导航栏 -->
+  <div class="nav">
+    <div class="logo">保媒+</div>
+    <a href="index.html">首页</a>
+    <a href="companies.html">公司介绍</a>
+    <a href="news.html">新闻中心</a>
+    <a href="contact.html">联系方式</a>
+  </div>
+
+  <!-- 轮播图 -->
+  <div class="banner" id="banner">
+    <!-- 轮播图由JS渲染 -->
+  </div>
+
+  <!-- 热门保险公司 -->
+  <div class="companies">
+    <h2>热门保险公司</h2>
+    <div class="company-list" id="companyList">
+      <!-- 保险公司列表由JS渲染 -->
+    </div>
+  </div>
+
+  <!-- 最新宣传内容 -->
+  <div class="news">
+    <h2>最新宣传内容</h2>
+    <div class="news-list" id="newsList">
+      <!-- 新闻列表由JS渲染 -->
+    </div>
+  </div>
+
+  <!-- 底部 -->
+  <div class="footer">
+    <div class="contact">
+      <p><strong>保险让生活更美好</strong></p>
+      <p>平台仅提供宣传内容展示，合作事宜请直接联系对应保险公司</p>
+    </div>
+    <!--<div class="copyright">© 2025 保险宣传平台 版权所有 | 隐私政策 | 免责声明</div>-->
+  </div>
+
+  <!-- 引入数据文件和JS逻辑 -->
+  <script src="data.js"></script>
+  <script>
+    // 1. 渲染轮播图
+    function renderBanner() {
+      const bannerContainer = document.getElementById("banner");
+      bannerList.forEach((item, index) => {
+        const bannerItem = document.createElement("div");
+        bannerItem.className = `banner-item ${index === 0 ? "active" : ""}`;
+        bannerItem.innerHTML = `
+          <a href="news.html"><img src="${item.img}" alt="${item.title}"></a>
+          <div class="banner-title">${item.title}</div>
+        `;
+        bannerContainer.appendChild(bannerItem);
+      });
+      // 自动轮播
+      let currentIndex = 0;
+      setInterval(() => {
+        document.querySelectorAll(".banner-item")[currentIndex].classList.remove("active");
+        currentIndex = (currentIndex + 1) % bannerList.length;
+        document.querySelectorAll(".banner-item")[currentIndex].classList.add("active");
+      }, 3000);
+    }
+
+    // 2. 渲染热门保险公司（取前3个）
+    function renderCompanies() {
+      const companyContainer = document.getElementById("companyList");
+      insuranceCompanies.slice(0, 3).forEach(company => {
+        const companyCard = document.createElement("div");
+        companyCard.className = "company-card";
+        companyCard.innerHTML = `
+          <img src="${company.logo}" alt="${company.name}">
+          <h3>${company.name}</h3>
+          <p>主营险种：${company.mainBusiness.join("、")}</p>
+          <p>${company.intro.substring(0, 66)}...</p>
+          <p class="coop-contact">${company.contact.substring(0, 18)}</p>
+          <a href="company-detail.html?id=${company.id}">查看详情</a>
+        `;
+        companyContainer.appendChild(companyCard);
+      });
+    }
+
+    // 3. 渲染最新新闻（取前3个）
+    function renderNews() {
+      const newsContainer = document.getElementById("newsList");
+      // 按发布时间倒序排序
+      const sortedNews = [...newsList].sort((a, b) => new Date(b.publishTime) - new Date(a.publishTime));
+      sortedNews.slice(0, 3).forEach(news => {
+        // 匹配所属保险公司名称
+        const company = insuranceCompanies.find(c => c.id === news.companyId);
+        const newsItem = document.createElement("div");
+        newsItem.className = "news-item";
+        newsItem.innerHTML = `
+          <h3><a href="news-detail.html?id=${news.id}">${news.title}</a></h3>
+          <div class="info">
+            <span>发布时间：${news.publishTime}</span>
+            <span>所属公司：${company?.name || "未知"}</span>
+          </div>
+          <p>${news.content.replace(/<[^>]+>/g, "").substring(0, 100)}...</p>
+        `;
+        newsContainer.appendChild(newsItem);
+      });
+    }
+
+    // 4. 全局搜索功能
+    function globalSearch() {
+      const keyword = document.getElementById("globalSearch").value.trim().toLowerCase();
+      if (!keyword) {
+        alert("请输入搜索关键词");
+        return;
+      }
+      // 搜索保险公司
+      const companyResult = insuranceCompanies.filter(c => c.name.toLowerCase().includes(keyword) || c.intro.toLowerCase().includes(keyword));
+      // 搜索新闻
+      const newsResult = newsList.filter(n => n.title.toLowerCase().includes(keyword) || n.content.toLowerCase().includes(keyword));
+      
+      if (companyResult.length > 0 || newsResult.length > 0) {
+        let resultText = "搜索结果：\n";
+        if (companyResult.length > 0) {
+          resultText += "\n【保险公司】\n";
+          companyResult.forEach(c => {
+            resultText += `- ${c.name}（点击查看详情：company-detail.html?id=${c.id}）\n`;
+          });
+        }
+        if (newsResult.length > 0) {
+          resultText += "\n【宣传内容】\n";
+          newsResult.forEach(n => {
+            resultText += `- ${n.title}（点击查看详情：news-detail.html?id=${n.id}）\n`;
+          });
+        }
+        alert(resultText);
+      } else {
+        alert("未找到相关内容");
+      }
+    }
+
+    // 初始化页面
+    renderBanner();
+    renderCompanies();
+    renderNews();
+  </script>
+</body>
+</html>

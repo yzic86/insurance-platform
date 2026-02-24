@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>保险宣传平台 - 公司详情</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "微软雅黑", sans-serif; }
+    /* 导航栏样式 */
+    .nav { height: 60px; background: #0066cc; display: flex; align-items: center; padding: 0 50px; flex-wrap: wrap; }
+    .nav .logo { color: white; font-size: 20px; font-weight: bold; margin-right: 50px; }
+    .nav a { color: white; text-decoration: none; margin: 0 20px; font-size: 16px; }
+    /* 主体容器 */
+    .container { padding: 30px 50px; max-width: 1200px; margin: 0 auto; }
+    .breadcrumb { font-size: 14px; color: #999; margin-bottom: 20px; }
+    .breadcrumb a { color: #0066cc; text-decoration: none; }
+    /* 公司详情样式 */
+    .company-detail { background: white; padding: 30px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .company-header { display: flex; align-items: center; gap: 30px; margin-bottom: 30px; flex-wrap: wrap; }
+    .company-header img { width: 120px; height: 120px; }
+    .company-header .info h2 { color: #0066cc; margin-bottom: 15px; }
+    .company-header .info p { margin-bottom: 8px; color: #666; }
+    .coop-contact { color: #e63946; font-weight: bold; font-size: 16px; }
+    .company-intro { margin-bottom: 30px; line-height: 1.8; color: #333; }
+    /* 关联新闻样式 */
+    .related-news h3 { margin-bottom: 20px; color: #333; border-left: 4px solid #0066cc; padding-left: 10px; }
+    .news-item { padding: 15px; border-bottom: 1px solid #eee; }
+    .news-item h4 { margin-bottom: 5px; }
+    .news-item h4 a { color: #333; text-decoration: none; }
+    .news-item .info { color: #999; font-size: 12px; }
+    /* 空数据样式 */
+    .empty { text-align: center; padding: 50px; color: #999; }
+    /* 底部样式 */
+    .footer { background: #333; color: white; padding: 30px 50px; margin-top: 30px; }
+    .footer .contact { margin-bottom: 20px; }
+    .footer .copyright { font-size: 12px; color: #999; }
+
+    /* 响应式适配 */
+    @media (max-width: 768px) {
+      .nav { padding: 0 20px; }
+      .nav .logo { margin-right: 20px; }
+      .nav a { margin: 0 10px; }
+      .container { padding: 20px; }
+      .company-header { flex-direction: column; align-items: flex-start; }
+      .company-header img { margin-bottom: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 导航栏 -->
+  <div class="nav">
+    <div class="logo">保媒+</div>
+    <a href="index.html">首页</a>
+    <a href="companies.html">公司介绍</a>
+    <a href="news.html">新闻中心</a>
+    <a href="contact.html">联系方式</a>
+  </div>
+
+  <!-- 公司详情主体 -->
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="index.html">首页</a> > <a href="companies.html">公司介绍</a> > <span id="companyName">加载中...</span>
+    </div>
+
+    <div class="company-detail" id="companyDetail">
+      <!-- 公司详情由JS渲染 -->
+    </div>
+
+    <!-- 关联宣传内容 -->
+    <div class="related-news" id="relatedNews">
+      <!-- 关联新闻由JS渲染 -->
+    </div>
+  </div>
+
+  <!-- 底部 -->
+  <div class="footer">
+    <div class="contact">
+      <p><strong>保险让生活更美好</strong></p>
+      <p>平台仅提供宣传内容展示，合作事宜请直接联系对应保险公司</p>
+    </div>
+    <!--<div class="copyright">© 2025 保险宣传平台 版权所有 | 隐私政策 | 免责声明</div>-->
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    // 获取URL中的id参数
+    function getUrlParam(name) {
+      const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`);
+      const r = window.location.search.substr(1).match(reg);
+      if (r != null) return decodeURIComponent(r[2]);
+      return null;
+    }
+
+    // 渲染公司详情
+    function renderCompanyDetail() {
+      const companyId = parseInt(getUrlParam("id"));
+      const company = insuranceCompanies.find(c => c.id === companyId);
+      
+      const detailContainer = document.getElementById("companyDetail");
+      const nameElement = document.getElementById("companyName");
+
+      if (!company) {
+        nameElement.textContent = "未找到该公司";
+        detailContainer.innerHTML = '<div class="empty">抱歉，未找到对应的保险公司信息</div>';
+        return;
+      }
+
+      // 设置面包屑中的公司名称
+      nameElement.textContent = company.name;
+      // 渲染公司详情
+      detailContainer.innerHTML = `
+        <div class="company-header">
+          <img src="${company.logo}" alt="${company.name}">
+          <div class="info">
+            <h2>${company.name}</h2>
+            <p><strong>主营险种：</strong>${company.mainBusiness.join("、")}</p>
+            <p class="coop-contact"><strong></strong>${company.contact}</p>
+          </div>
+        </div>
+        <div class="company-intro">
+          <h3>公司简介</h3>
+          <hr style="margin: 10px 0; border: 1px solid #eee;">
+          <p>${company.intro}</p>
+        </div>
+      `;
+
+      // 渲染关联宣传内容
+      renderRelatedNews(companyId);
+    }
+
+    // 渲染该公司的关联宣传内容
+    function renderRelatedNews(companyId) {
+      const relatedNews = newsList.filter(n => n.companyId === companyId);
+      const newsContainer = document.getElementById("relatedNews");
+
+      if (relatedNews.length === 0) {
+        newsContainer.innerHTML = '<div class="empty">该公司暂无相关宣传内容</div>';
+        return;
+      }
+
+      // 按发布时间倒序排序
+      const sortedNews = [...relatedNews].sort((a, b) => new Date(b.publishTime) - new Date(a.publishTime));
+      
+      let newsHtml = "<h3>关联宣传内容</h3>";
+      sortedNews.forEach(news => {
+        newsHtml += `
+          <div class="news-item">
+            <h4><a href="news-detail.html?id=${news.id}">${news.title}</a></h4>
+            <div class="info">
+              <span>发布时间：${news.publishTime}</span>
+              <br>
+            </div>
+          </div>
+        `;
+      });
+      newsContainer.innerHTML = newsHtml;
+    }
+
+    // 初始化页面
+    renderCompanyDetail();
+  </script>
+</body>
+</html>
